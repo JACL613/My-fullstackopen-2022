@@ -1,0 +1,21 @@
+title APP NOTES MPA
+
+
+actor user
+user->browser:Data for notes
+browser->server:request:GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser:response: main.css
+browser->server:request POST https://studies.cs.helsinki.fi/exampleapp/notes
+note left of browser: Form: Datos Notes 
+server-->browser:response: Status Code 302
+browser->server:request: GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser:response: index.html Status Code: 304
+browser->server:request: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser:response: main.css Status Code: 304
+browser->server:request: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser:response: main.js Status Code: 304
+browser->server:request: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser:response: data.json Status Code: 200
+browser->server:request: GET https://studies.cs.helsinki.fi/favicon.ico
+server-->browser:response: favicon.ico Status Code: 200
+browser->user:render app news notes

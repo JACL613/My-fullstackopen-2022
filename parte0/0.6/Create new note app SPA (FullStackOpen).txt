@@ -1,0 +1,8 @@
+title Create new note app SPA
+
+actor user
+user->browser:Data for notes
+browser->server:request POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+note left of browser: Form: Datos Notes 
+server-->browser:response: {"message":"note created"} Status Code: 201 
+browser->user:render app news notes
