@@ -1,7 +1,9 @@
 import React from 'react'
 
 export default function Total({allExercise}) {
+    let suma = 0
+    allExercise.map(item => suma += item.exercises)
   return (
-    <p>Number of exercise {allExercise[0] + allExercise[1] + allExercise[2]}</p>
+    <p>Number of exercise {suma}</p>
   )
 }
