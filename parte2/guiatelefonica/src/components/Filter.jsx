@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function Filter({persons ,setSearch}) {
+export default function Filter({Data ,setData}) {
     const handdelFilter = e => {
         const {value} = e.target;
-        const filterPersons = persons.filter(p => {return p.name.toLowerCase() >= value.toLowerCase() ? p : null} )
-        setSearch(filterPersons)
+        const filterData = Data.filter(p => {return p.name.toLowerCase() >= value.toLowerCase() ? p : null} )
+        setData(filterData)
     }
   return (
     <div>

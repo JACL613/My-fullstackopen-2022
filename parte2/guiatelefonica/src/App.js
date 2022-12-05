@@ -1,18 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
+import axios from 'axios';
 import CardPerson from './components/Card.Person'
 import Filter from './components/Filter'
 import FormPerson from './components/Form.Person'
 
 const App = () => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [ persons, setPersons ] = useState() 
   const [search , setSearch] = useState()
 
-
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons')
+    .then(res => setPersons(res.data))
+    .catch(err => console.log(err))
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  } , [!persons])
  
   return (
     <div>
