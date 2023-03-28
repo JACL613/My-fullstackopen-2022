@@ -13,6 +13,8 @@ import Notification from './components/Notification'
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [token, setToken] = useState('');
+  const [id, setId] = useState('')
+
   
   const [ErrorMessage, setErrorMessage] = useState(null)
   const [StatusMessage, setStatusMessage] = useState()
@@ -21,24 +23,39 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
       ) 
+   
+
       
   }, [])
   useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedNoteappUser')
+    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
       setToken (user)
       blogService.setToken(user.token)
+      blogService.confirmBlog({id: null})
+      .then(res => setId(res)).catch(err => err.response.data)  
     }
   }, [])
     const userLogin = (userObject) => {
       userService.login(userObject)
       .then(respuesta => {
-        window.localStorage.setItem(
-          'loggedNoteappUser', JSON.stringify(respuesta)
-        )
-        blogService.setToken(respuesta.token)
-        setToken(respuesta)
+        if(!respuesta.error){
+          window.localStorage.setItem(
+            'loggedBlogappUser', JSON.stringify(respuesta)
+          )
+          blogService.setToken(respuesta.token)
+          setToken(respuesta)
+          
+          blogService.confirmBlog({id: null})
+          .then(res => setId(res)).catch(err => err.response.data)  
+        }else {
+        setErrorMessage(`Fallo: ${respuesta.error}`)
+        setStatusMessage('error')
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+      }
       }).catch(respuesta => {
         setErrorMessage(`Fallo: ${respuesta.error}`)
         setStatusMessage('error')
@@ -56,6 +73,7 @@ const App = () => {
           setErrorMessage(null)
         }, 5000)
 
+      
         setBlogs([...blogs, respuesta])
       }).catch(respuesta => {
         setErrorMessage(`Fallo: ${respuesta.error}`)
@@ -64,6 +82,7 @@ const App = () => {
           setErrorMessage(null)
         }, 5000)
       })
+     
     }
     const upLike = (blogObject) => {
       blogService.updateLikes(blogObject)
@@ -99,6 +118,11 @@ const App = () => {
       })
       setBlogs([...filterBlog])
     }
+    // const handelConfirm = (blogObject) =>{
+    //   const request = blogService.confirmBlog(blogObject)
+    //   return request.then(res => setId(res)).catch(err => err.response.data)
+
+    // }
   if (token) {
     return (
       <div>
@@ -113,6 +137,7 @@ const App = () => {
         >
         <FormBlogCreate 
         create={addNewBlog}
+        authorName={token.name}
         />
         </Toggable>
         <Toggable 
@@ -123,12 +148,17 @@ const App = () => {
           
           blogs && blogs.length > 0
           ?blogs.map(blog =>
-          <Blog 
+          {
+          return<Blog 
           key={blog.id} 
           blog={blog} 
           updateLikes={upLike}  
           deleteBlog={delBlog}
-          />
+          user={id}
+          >
+
+          </Blog>
+          }
         )
         :<h3>No hay blogs</h3>
         }
@@ -137,9 +167,12 @@ const App = () => {
     )
   }else{
     return (
-      <FormLogin 
+      <div>
+      <Notification style={StatusMessage} message={ErrorMessage} />
+        <FormLogin 
       login={userLogin}
       newToken={e => setToken(e)}/>
+      </div>
    )
   }
 }

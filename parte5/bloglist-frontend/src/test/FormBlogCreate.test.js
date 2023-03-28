@@ -18,15 +18,12 @@ describe('<FormBlogCreate />', () => {
       test('Try creating a new blog', () => { 
         const form = componente.container.querySelector('form')
        const inputTitle = componente.container.querySelector('#title') 
-       const inputAuthor = componente.container.querySelector('#author') 
        const inputUrl = componente.container.querySelector('#url') 
 
        fireEvent.change(inputTitle , {
         target: {value: blog.title}
        })
-       fireEvent.change(inputAuthor , {
-        target: {value: blog.author}
-       })
+       
        fireEvent.change(inputUrl , {
         target: {value: blog.url}
        })

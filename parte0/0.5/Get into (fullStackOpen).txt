@@ -13,4 +13,9 @@ server-->browser:response: data.json Status Code: 200
 browser->server:request: GET https://studies.cs.helsinki.fi/favicon.ico
 server-->browser:response: favicon.ico Status Code: 200
 browser->user:render app notes
+note left of browser: Form: Datos Notes 
+user->browser:
+browser->server:request: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser:response: {message: 'note create'} newNota.html
 
+browser->user:add new note

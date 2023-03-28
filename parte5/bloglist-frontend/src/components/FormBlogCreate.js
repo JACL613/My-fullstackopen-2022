@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 
 
-export default function FormBlogCreate ({create}) {
+export default function FormBlogCreate ({create, authorName}) {
   const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
+  const [author, setAuthor] = useState(authorName)
   const [url, setUrl] = useState('')
 
 
@@ -11,7 +11,7 @@ export default function FormBlogCreate ({create}) {
     e.preventDefault()
     create({ title, author, url, likes: 0 })
      
-    setAuthor('')
+    setAuthor(authorName)
     setTitle('')
     setUrl('')
   }
@@ -47,7 +47,7 @@ export default function FormBlogCreate ({create}) {
           onChange={({ target }) => setUrl(target.value)}
         />
       </div>
-      <button type='submit'>enviar</button>
+      <button id='createBlog-button' type='submit'>enviar</button>
     </form>
   )
 }

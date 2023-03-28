@@ -1,0 +1,48 @@
+  it('create new blog', function() {
+    cy.contains('Login Form')
+    cy.get('#username').type(user.username)
+    cy.get('#password').type(user.password)
+    cy.get('#login-button').click()
+    cy.contains(`Inicio de sesion de: ${user.name}`)
+
+    cy.contains('Create Blog').click()
+    cy.get('#title').type(blog.title)
+    cy.get('#url').type(blog.url)
+    cy.get('#createBlog-button').click()
+    cy.contains(`se guardo del autor: ${blog.author}`)
+ 
+        
+  });
+  it('Accion like blog' , function() {
+    cy.contains('Login Form')
+    cy.get('#username').type(user.username)
+    cy.get('#password').type(user.password)
+    cy.get('#login-button').click()
+    cy.contains(`Inicio de sesion de: ${user.name}`)
+
+    cy.contains('Create Blog').click()
+    cy.get('#title').type(blog.title)
+    cy.get('#author').type(blog.author)
+    cy.get('#url').type(blog.url)
+    cy.get('#createBlog-button').click()
+    cy.contains(`se guardo del autor: ${blog.author}`)
+
+    cy.contains('Blogs').click()
+    cy.contains(blog.title)
+    cy.contains('show...').click()
+    cy.contains('like').click()
+    cy.contains('Likes:1')
+  })
+  it('Accion Delete Blog', () => {
+    cy.contains('Login Form')
+    cy.get('#username').type(user.username)
+    cy.get('#password').type(user.password)
+    cy.get('#login-button').click()
+    cy.contains(`Inicio de sesion de: ${user.name}`)
+
+    cy.contains('Create Blog').click()
+    cy.get('#title').type(blog.title)
+    cy.get('#url').type(blog.url)
+    cy.get('#createBlog-button').click()
+    cy.contains(`se guardo del autor: ${blog.author}`)
+  });

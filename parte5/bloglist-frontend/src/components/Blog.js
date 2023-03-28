@@ -1,7 +1,9 @@
 import React from 'react'
 import Toggable from './Toggable'
 
-const Blog = ({ blog, updateLikes ,deleteBlog}) => {
+const Blog = ({ blog, updateLikes ,deleteBlog , user}) => {
+
+
   const handelLike = () => {
     updateLikes(blog)
       
@@ -25,7 +27,11 @@ const Blog = ({ blog, updateLikes ,deleteBlog}) => {
           <li>Likes:{blog.likes} <button className='ButtonMoreLike' onClick={handelLike}>like</button></li>
         </ul>
       </Toggable>
-      <button onClick={handelDelete}>Delete</button>
+      {
+        user === blog.user
+         ?<button className='buttonDelete' onClick={handelDelete}>Delete</button>
+         : <button className='buttonDelete' disabled>Delete</button>
+        }
     </div>
   )
 }

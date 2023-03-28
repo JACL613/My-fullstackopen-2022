@@ -13,7 +13,7 @@ export default function Toggable ({ buttonLabel, children }) {
   return (
     <div>
       <div style={hideWhenVisible}>
-        <button onClick={toggleVisibility}>{buttonLabel}</button>
+        <button className='buttonShowToggable' onClick={toggleVisibility}>{buttonLabel}</button>
       </div>
       <div style={showWhenVisible} className="togglableContent">
         {children}

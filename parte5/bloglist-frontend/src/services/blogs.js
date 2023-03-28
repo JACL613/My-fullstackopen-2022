@@ -9,7 +9,7 @@ const obj = {
 console.log(obj)
 const setToken = newToken => {
   console.log('tienes token', newToken)
-  token = `bearer ${newToken}`
+  token = `Bearer ${newToken}`
 }
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -32,11 +32,20 @@ const updateLikes = (obj) => {
 const deleteBlog = (obj) => {
   const config = {
     headers: { Authorization: token, ID: obj.id }
-
+    
   }
   console.log(config)
   const request = axios.delete(`${baseUrl}/${obj.id}`, config)
   return request.then(res => res.data).catch(err => err.response.data)
 }
+const confirmBlog = (obj) => {
+  const config = {
+    headers: { Authorization: token }
+    
+  }
+  const request = axios.post(`${baseUrl}/confirm`, obj, config)
+  return request.then(res => res.data).catch(err => err.response.data)
+
+}
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { getAll, create, setToken, updateLikes, deleteBlog }
+export default { getAll, create, setToken, updateLikes, deleteBlog , confirmBlog }
