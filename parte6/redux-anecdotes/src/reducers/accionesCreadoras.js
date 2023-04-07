@@ -4,13 +4,20 @@ export const CreateAnecdote = (content) => {
         data: {
             content: content,
             id: (100000 * Math.random()).toFixed(0),
-            votes: 0
+            votes: 0,
+            important: false
         }
     }
 }
 export const ToggableVoted = (id) => {
     return {
         type: 'Voto',
+        data: {id}
+    }
+}
+export const ToggableImportant = (id) => {
+    return {
+        type: 'Toggable_Important',
         data: {id}
     }
 }

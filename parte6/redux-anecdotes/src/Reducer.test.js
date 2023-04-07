@@ -1,8 +1,9 @@
 import deepFreeze from 'deep-freeze'
 import anecdoteReducer,{initialState} from './reducers/anecdoteReducer'
+import { CreateAnecdote, ToggableFilterVoted, ToggableImportant, ToggableVoted } from './reducers/accionesCreadoras';
 
 describe('Anecdote Reducers', () => {
-    test('should return a proper initial state when called with undefined state', () => {
+      test('should return a proper initial state when called with undefined state', () => {
         const state = initialState
         const action = {
           type: 'DO_NOTHING'
@@ -16,43 +17,33 @@ describe('Anecdote Reducers', () => {
         const state = initialState
         deepFreeze(state)
         const id = state[1].id
-        const accion = {
-            type: 'Voto',
-            data: {id}
-        }
-        const newState = anecdoteReducer(state,accion)
+     
+        const newState = anecdoteReducer(state,ToggableVoted(id))
         expect(newState[1]).not.toEqual(state[1])
       })
-      test('should first', () => { 
+      test('accion crear nueva nota', () => { 
         const state = initialState
         deepFreeze(state)
-        const newAnecdote = {
-            content: 'Nueva anecdota creada desde los test',
-            id: (100000 * Math.random()).toFixed(0),
-            votes: 0
-        }
-
-        const accion = {
-            type: 'Create_Anecdote',
-            data: {newAnecdote}
-        }
-        const  newState = anecdoteReducer(state,accion)
+        
+        const  newState = anecdoteReducer(state,CreateAnecdote({content: 'Nueva anecdota creada desde los test'}))
         expect(newState).toHaveLength(state.length + 1)
        })
-       test('should cloud', () => {
-            const baseState = initialState
-        const id = baseState[1].id
-
-           const state = anecdoteReducer(baseState,{
-            type: 'Voto',
-            data: {id}
-        })
-        const accion = {
-            type: 'Filter_For_Voted'
-        }
-        deepFreeze(baseState)
-        const newState = anecdoteReducer(state,accion)
-        console.log('filtrado',newState )
+      test('Accion orden por voto', () => {
+        let state = initialState
+        const id = state[1].id
+     
+        state = anecdoteReducer(state,ToggableVoted(id))
+    
+        
+        deepFreeze(state)
+        const newState = anecdoteReducer(state,ToggableFilterVoted())
         expect(newState[0].votes).toBe(1)    
         })
+        test('should neuvo', () => {
+          const state = initialState 
+          const {id} = state[1]
+
+          const newState = anecdoteReducer(state,ToggableImportant(id))
+          expect(newState[1]).not.toEqual(state[1])
+         })
 });
