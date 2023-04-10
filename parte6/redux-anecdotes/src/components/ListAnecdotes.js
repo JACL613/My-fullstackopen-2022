@@ -1,6 +1,6 @@
 import React  from 'react'
 import {useSelector , useDispatch} from 'react-redux';
-import { ToggableFilterVoted , ToggableImportant, ToggableVoted } from '../reducers/accionesCreadoras';
+import { ToggableFilterVoted , ToggableImportant, ToggableVoted, messageNotification } from '../reducers/accionesCreadoras';
 
 export default function ListAnecdotes() {
   const anecdotes = useSelector(state => {
@@ -14,6 +14,11 @@ export default function ListAnecdotes() {
   const dispatch = useDispatch()
   const vote = (id) => {
     dispatch(ToggableVoted(id))
+    dispatch(messageNotification({menssage: `Voto para la anecdote: ${id}`}))
+    setTimeout(() => {
+      dispatch(messageNotification({menssage: 'CLEAR'}))
+      
+    }, 5000);
     dispatch(ToggableFilterVoted())
   }
   const important = (id) => {

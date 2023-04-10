@@ -1,3 +1,4 @@
+import {createSlice} from '@reduxjs/toolkit'
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -22,28 +23,31 @@ const asObject = (anecdote) => {
 
 export const initialState = anecdotesAtStart.map(asObject)
 
-const anecdotesReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-  switch(action.type){
-    case 'Voto':
+const anecdotesReducer = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers:{
+    Voto(state, action){
       const id = action.data.id
       return state.map(anecdote => {
         return anecdote.id === id
         ?{...anecdote, votes: anecdote.votes + 1 }
         :anecdote
       })
-    case 'Create_Anecdote':
+    },
+    Create_Anecdote(state , action){
       const newAnecdote = action.data
-    return [...state,newAnecdote]
-    case 'Toggable_Important':
+      return [...state,newAnecdote]
+    },
+    Toggable_Important(state , action){
       return state.map(anecdote => {
         const id = action.data.id
         return anecdote.id === id
         ?{...anecdote,important: !anecdote.important}
         :anecdote
       })
-    case 'Filter_For_Voted':
+    },
+    Filter_For_Voted(state , action){
       return [...state].sort(function (a, b) {
         if (a.votes > b.votes) {
           return -1;
@@ -53,10 +57,44 @@ const anecdotesReducer = (state = initialState, action) => {
         }
         return 0;
       })  
-    default :
-    return state
-
+    }
   }
-}
+})
+// const anecdotesReducer = (state = initialState, action) => {
+//   console.log('state now: ', state)
+//   console.log('action', action)
+//   switch(action.type){
+//     case 'Voto':
+//       const id = action.data.id
+//       return state.map(anecdote => {
+//         return anecdote.id === id
+//         ?{...anecdote, votes: anecdote.votes + 1 }
+//         :anecdote
+//       })
+//     case 'Create_Anecdote':
+//       const newAnecdote = action.data
+//     return [...state,newAnecdote]
+//     case 'Toggable_Important':
+//       return state.map(anecdote => {
+//         const id = action.data.id
+//         return anecdote.id === id
+//         ?{...anecdote,important: !anecdote.important}
+//         :anecdote
+//       })
+//     case 'Filter_For_Voted':
+//       return [...state].sort(function (a, b) {
+//         if (a.votes > b.votes) {
+//           return -1;
+//         }
+//         if (a.votes < b.votes) {
+//           return 1;
+//         }
+//         return 0;
+//       })  
+//     default :
+//     return state
 
-export default anecdotesReducer
+//   }
+// }
+export const {Voto , Create_Anecdote , Toggable_Important ,Filter_For_Voted} = anecdotesReducer.actions
+export default anecdotesReducer.reducer
