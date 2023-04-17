@@ -1,6 +1,8 @@
 import React  from 'react'
 import {useSelector , useDispatch} from 'react-redux';
-import { ToggableFilterVoted , ToggableImportant, ToggableVoted, messageNotification } from '../reducers/accionesCreadoras';
+import { ToggableFilterVoted , ToggableImportant,  } from '../reducers/accionesCreadoras';
+import { accionVote } from '../reducers/anecdoteReducer';
+import { setNotification } from '../reducers/notificationReducer';
 
 export default function ListAnecdotes() {
   const anecdotes = useSelector(state => {
@@ -12,13 +14,9 @@ export default function ListAnecdotes() {
     :state.anecdotes.filter(anecdote => !anecdote.important)
   })
   const dispatch = useDispatch()
-  const vote = (id) => {
-    dispatch(ToggableVoted(id))
-    dispatch(messageNotification({menssage: `Voto para la anecdote: ${id}`}))
-    setTimeout(() => {
-      dispatch(messageNotification({menssage: 'CLEAR'}))
-      
-    }, 5000);
+  const vote = (anecdote) => {
+    dispatch(accionVote(anecdote))
+    dispatch(setNotification({menssage: `Voto para la anecdote: ${anecdote.id}`},3000))
     dispatch(ToggableFilterVoted())
   }
   const important = (id) => {
@@ -33,7 +31,7 @@ export default function ListAnecdotes() {
           </div>
           <div>
              {anecdote.votes}
-            <button onClick={() => vote(anecdote.id)}>vote</button>
+            <button onClick={() => vote(anecdote)}>vote</button>
           </div>
           <div>
             <button onClick={() => important(anecdote.id)}>{anecdote.important === false ? 'NoImportant' : 'Important'}</button>

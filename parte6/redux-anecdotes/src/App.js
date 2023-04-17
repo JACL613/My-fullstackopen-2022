@@ -3,8 +3,14 @@ import FormAnecdotes from './components/FormAnecdotes';
 import ListAnecdotes from './components/ListAnecdotes';
 import Notification from './components/Notification';
 import FilterComponent from './components/FilterComponent';
+import { useEffect } from 'react';
+import {initialAnecdotes}  from './reducers/anecdoteReducer';
+import { useDispatch } from 'react-redux';
 const App = () => {
- 
+    const dispatch = useDispatch()
+    useEffect(()=> {
+      dispatch(initialAnecdotes())
+    },[dispatch])
 
   return (
     <div>

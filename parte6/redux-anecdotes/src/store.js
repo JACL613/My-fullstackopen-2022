@@ -10,5 +10,5 @@ const store = configureStore({
     notification: notificationReducer
     }
   })
-
+  
 export default store

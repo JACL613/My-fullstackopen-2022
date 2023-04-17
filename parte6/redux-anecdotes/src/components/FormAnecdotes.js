@@ -1,6 +1,7 @@
 import React from 'react'
 import {  useDispatch } from 'react-redux'
-import { CreateAnecdote, messageNotification } from '../reducers/accionesCreadoras'
+import { createAnecdote } from '../reducers/anecdoteReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
 
 export default function FormAnecdotes() {
@@ -9,12 +10,8 @@ export default function FormAnecdotes() {
         e.preventDefault()
         const content = e.target.anecdote.value
         e.target.anecdote.value = ''
-        dispatch(CreateAnecdote(content))
-        dispatch(messageNotification({menssage: 'Anecdota Creada'}))
-        setTimeout(() => {
-          dispatch(messageNotification({menssage: 'CLEAR'}))
-          
-        }, 5000);        
+        dispatch(createAnecdote(content))
+        dispatch(setNotification({menssage:`se agrego la anecdote`} , 3000))       
     }
   return (
     <form onSubmit={handelCreate}>
