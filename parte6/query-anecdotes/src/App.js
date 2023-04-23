@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import AnecdoteForm from './components/AnecdoteForm'
 import Notification from './components/Notification'
 import { getAnecdotes, vote } from './services/request'
+import { accionNotification, useAnecdoteDispatch } from './Reducers/AnecdoteContext'
 
 const App = () => {
   const queryClient = useQueryClient()
@@ -10,8 +11,10 @@ const App = () => {
       queryClient.invalidateQueries('anecdotes')
     }
   })
+  const dispatch = useAnecdoteDispatch()
   const handleVote = (anecdote) => {
     upAnecdoteMutation.mutate({...anecdote, votes: anecdote.votes + 1})
+    accionNotification(dispatch,`Se voto por la nota: ${anecdote.id}`)
     console.log('vote')
   }
 
@@ -25,7 +28,7 @@ const App = () => {
 
   const result = useQuery('anecdotes', 
   getAnecdotes,
-  {retry:3} 
+  {retry:3 ,refetchOnWindowFocus: false} 
   )
   if (result.isLoading) {
     return <div>is Loading....</div>

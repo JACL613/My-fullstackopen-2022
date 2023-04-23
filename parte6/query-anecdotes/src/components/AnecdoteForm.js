@@ -1,12 +1,19 @@
 import { useMutation, useQueryClient } from "react-query"
 import { createAnecdote } from "../services/request"
+import { accionNotification, useAnecdoteDispatch } from "../Reducers/AnecdoteContext"
 
 const AnecdoteForm = () => {
+  const dispatch = useAnecdoteDispatch()
   const queryClient = useQueryClient()
   const newAnecdoteMutation = useMutation(createAnecdote , {
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log(data);
+      if (data.status === 400) {
+        return accionNotification(dispatch,data.data.error)
+      }
+      accionNotification(dispatch,'Se agrego una nota nueva')
       queryClient.invalidateQueries('anecdotes')
-    }
+    },
   })
   const onCreate = (event) => {
     event.preventDefault()
